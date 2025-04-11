@@ -2,7 +2,7 @@
  "name": "dukan-fullstack",
  "private": true,
  "scripts": {
-   "build": "cd client && npm install && npm run build",
+   "build": "npm install && npm install --prefix client && npm run build --prefix client",
    "start": "node server/index.js"
  },
  "dependencies": {
