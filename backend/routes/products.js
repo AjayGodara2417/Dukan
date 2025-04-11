@@ -28,6 +28,12 @@ const createRouter = (io) => {
     res.status(200).json({ message: "Product added successfully" });
   });
 
+    // Serve frontend for any unknown route
+    router.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname, '../client/dist/index.html')); // Adjust path if needed
+    });
+
+
   return router;
 };
 
