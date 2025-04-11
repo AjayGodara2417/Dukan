@@ -1,3 +1,4 @@
+// src/components/DemoProducts.tsx
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../features/CartSlice";
@@ -5,7 +6,7 @@ import { addToWishlist, removeFromWishlist } from "../features/wishlistSlice";
 import { useNavigate } from "react-router-dom";
 import { RootState } from "../app/store";
 import { Heart, HeartOff } from "lucide-react";
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 
 interface Product {
   id: number;
@@ -14,7 +15,9 @@ interface Product {
   image: string;
 }
 
-const socket = io("http://localhost:3000");
+// Use environment variable for Socket.io backend URL
+const BACKEND_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const socket: Socket = io(BACKEND_URL);
 
 const DemoProducts: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -22,27 +25,9 @@ const DemoProducts: React.FC = () => {
   const navigate = useNavigate();
 
   const wishlistItems = useSelector((state: RootState) => state.wishlist.wishlistItems);
-
   const isWishlisted = (id: number) => wishlistItems.some(item => item.id === id);
 
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     try {
-  //       const response = await fetch("http://localhost:3000/product/get-products");
-  //       const data = await response.json();
-  //       console.log("data : ",data);
-  //       setProducts(data.data);
-  //     } catch (error) {
-  //       console.error("Error:", error);
-  //     }
-  //   };
-  //   fetchProducts();
-  // //   // Short Polling:
-  // //   // setInterval(fetchProducts,0);
-  // }, []);
-
-
-  // Using WebSocket
+  // Real-time product updates with WebSocket
   useEffect(() => {
     socket.on("productData", (data: Product[]) => {
       setProducts(data);
@@ -52,7 +37,6 @@ const DemoProducts: React.FC = () => {
       socket.off("productData");
     };
   }, []);
-  
 
   return (
     <div className="p-5">
@@ -82,7 +66,7 @@ const DemoProducts: React.FC = () => {
               {isWishlisted(product.id) ? <HeartOff size={20} /> : <Heart size={20} />}
             </button>
 
-              {/* Add to Cart */}
+            {/* Add to Cart */}
             <div className="flex gap-2 mt-4">
               <button
                 onClick={() => {
@@ -94,7 +78,7 @@ const DemoProducts: React.FC = () => {
                 Add to Cart
               </button>
 
-                {/* View Btn */}
+              {/* View Btn */}
               <button
                 onClick={() => navigate(`/product/${product.id}`)}
                 className="bg-green-500 text-white text-sm px-3 py-1 rounded hover:bg-green-600"
