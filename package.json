@@ -1,0 +1,11 @@
+{
+ "name": "dukan-fullstack",
+ "private": true,
+ "scripts": {
+   "build": "cd client && npm install && npm run build",
+   "start": "node server/index.js"
+ },
+ "dependencies": {
+   "express": "^4.18.2"
+ }
+}
