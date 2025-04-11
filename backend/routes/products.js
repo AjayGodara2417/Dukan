@@ -30,7 +30,7 @@ const createRouter = (io) => {
 
     // Serve frontend for any unknown route
     router.get('*', (req, res) => {
-      res.sendFile(path.join(__dirname, '../client/dist/index.html')); // Adjust path if needed
+      res.sendFile(path.join(__dirname, '../../client/dist/index.html')); // Adjust path if needed
     });
 
 
