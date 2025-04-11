@@ -15,6 +15,9 @@ const io = socketIo(server, {
 app.use(cors());
 app.use(express.json());
 
+// Serve frontend static files
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
 const productRoutes = require("./routes/products")(io);
 app.use("/product", productRoutes);
 
@@ -23,6 +26,14 @@ io.on("connection", (socket) => {
 
   const products = require("./data/products.json");
   socket.emit("productData", products);
+});
+
+// API routes here...
+// app.get('/api/xyz', ...);
+
+// Handle all other routes
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
 server.listen(3000, () => {
