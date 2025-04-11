@@ -23,6 +23,7 @@ const createRouter = (io) => {
     fs.writeFileSync(dataPath, JSON.stringify(products, null, 2));
 
     io.emit("productData", products);
+    console.log("Products length", products.length)
 
     res.status(200).json({ message: "Product added successfully" });
   });
