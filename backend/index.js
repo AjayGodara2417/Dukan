@@ -15,25 +15,23 @@ const io = socketIo(server, {
 app.use(cors());
 app.use(express.json());
 
-// Serve frontend static files
-app.use(express.static(path.join(__dirname, '../client/dist')));
+// Serve static files from the frontend
+const frontendPath = path.join(__dirname, "../../client/dist"); // Adjust this if needed
+app.use(express.static(frontendPath));
 
 const productRoutes = require("./routes/products")(io);
 app.use("/product", productRoutes);
+
+// Handle client-side routing (React Router)
+app.get("*", (req, res) => {
+  res.sendFile(path.join(frontendPath, "index.html"));
+});
 
 io.on("connection", (socket) => {
   console.log("Client connected");
 
   const products = require("./data/products.json");
   socket.emit("productData", products);
-});
-
-// API routes here...
-// app.get('/api/xyz', ...);
-
-// Handle all other routes
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
 server.listen(3000, () => {
