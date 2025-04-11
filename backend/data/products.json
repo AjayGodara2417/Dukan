@@ -1,0 +1,20 @@
+[
+  {
+    "id": 1,
+    "title": "Wireless Headphones",
+    "price": 1299,
+    "image": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 2,
+    "title": "Gaming Mouse",
+    "price": 699,
+    "image": "https://via.placeholder.com/150"
+  },
+  {
+    "id": 3,
+    "title": "New Smartwatch",
+    "price": 2499,
+    "image": "https://example.com/watch.jpg"
+  }
+]
